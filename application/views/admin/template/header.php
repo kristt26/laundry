@@ -8,10 +8,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="<?= base_url();?>assets/plugins/fontawesome-free/css/all.min.css">
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <link rel="stylesheet" href="<?= base_url();?>assets/dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="<?= base_url();?>assets/plugins/daterangepicker/daterangepicker.css">
+
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   <script src="https://unpkg.com/ionicons@5.1.2/dist/ionicons.js"></script>
   <link rel="stylesheet" href="<?= base_url();?>assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+  <link rel="stylesheet" href="<?= base_url();?>assets/plugins/select2/css/select2.min.css">
+  <link rel="stylesheet" href="<?= base_url();?>assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="<?= base_url();?>assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <!-- <link rel="stylesheet" href="<?= base_url();?>assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css"> -->
+  <link rel="stylesheet" href="<?= base_url();?>assets/dist/css/adminlte.min.css">
   <script src="<?= base_url();?>assets/plugins/jquery/jquery.min.js"></script>
 </head>
 <body class="hold-transition sidebar-mini">
@@ -86,7 +92,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="<?= base_url()?>admin/profile" class="nav-link">
+              <a href="<?= base_url()?>admin/transaksi" class="nav-link">
                 <i class="nav-icon fas fa-th"></i>
                 <p>
                   Traksaksi
@@ -94,7 +100,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="<?= base_url()?>admin/transaksi" class="nav-link">
+              <a href="<?= base_url()?>admin/laporan" class="nav-link">
                 <i class="nav-icon fas fa-th"></i>
                 <p>
                   Laporan

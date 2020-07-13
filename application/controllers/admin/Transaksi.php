@@ -15,19 +15,39 @@ class Transaksi extends CI_Controller
     {
         $title['title'] = ['header' => 'Transaksi', 'dash' => 'Transaksi'];
         $data = $this->TransaksiModel->select();
-        $this->load->view('member/template/header', $title);
-        $this->load->view('member/transaksi', $data);
-        $this->load->view('member/template/footer');
+        $this->load->view('admin/template/header', $title);
+        $this->load->view('admin/transaksi', $data);
+        $this->load->view('admin/template/footer');
     }
-    function insert()
+    function simpan()
     {
         $data = $this->input->post();
         $result = $this->TransaksiModel->insert($data);
         if($result)
-            $this->session->set_flashdata('pesan', 'Status berhasil di ubah, success');
+            $this->session->set_flashdata('pesan', 'Transaksi berhasil disimpan, success');
         else
-            
+            $this->session->set_flashdata('pesan', 'Transaksi gagal disimpan, error');
+        redirect('admin/transaksi');
+    }
+    function ubah()
+    {
+        $data = $this->input->post();
+        $result = $this->TransaksiModel->update($data);
+        if($result)
+            $this->session->set_flashdata('pesan', 'Transaksi berhasil di diubah, success');
+        else
+            $this->session->set_flashdata('pesan', 'Transaksi gagal diubah, error');
+        redirect('admin/transaksi');
+    }
+    function hapus()
+    {
+        $data = $this->input->post();
+        $result = $this->TransaksiModel->delete($data);
+        if($result)
+            $this->session->set_flashdata('pesan', 'Transaksi berhasil dihapus, success');
+        else
+            $this->session->set_flashdata('pesan', 'Transaksi gagal dihapus, error');
+        redirect('admin/transaksi');
     }
 }
 
-/* End of file Controllername.php */
