@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 3 | Log in</title>
+  <title><?= $header?></title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -31,7 +31,7 @@
       <div class="card-body login-card-body">
         <p class="login-box-msg">Sign in to start your session</p>
 
-        <form action="<?= base_url();?>auth/authorization/login" method="post">
+        <form action="<?= base_url();?>authorization/login" method="post">
           <div class="input-group mb-3">
             <input type="text" class="form-control" name="username" placeholder="Username">
             <div class="input-group-append">
@@ -67,11 +67,8 @@
   <script src="<?= base_url();?>assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
   <!-- AdminLTE App -->
   <script src="<?= base_url();?>assets/dist/js/adminlte.min.js"></script>
+  <script src="<?= base_url();?>assets/node_modules/sweetalert/dist/sweetalert.min.js"></script>
   <script type="text/javascript">
-    $(document).ready(function () {
-      bsCustomFileInput.init();
-    });
-
     $(function () {
       $(document).ready(function () {
           var data = $('.data-flush').data('flash');

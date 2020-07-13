@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class User_model extends CI_Model {
     function select($data)
     {
-        $item = array('username'=>$data['username'], 'password'=>md5('password'));
+        $item = array('username'=>$data['username'], 'password'=>md5($data['password']));
         $result = $this->db->get_where('user', $item);
         if($result->num_rows()>0){
             $user = $result->result()[0];

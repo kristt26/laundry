@@ -20,7 +20,7 @@
   if(!$this->session->userdata('jenis') || $this->session->userdata('jenis')!='Admin'){
     $this->session->set_flashdata('pesan', 'Anda tidak memiliki akses, error');
     $this->session->sess_destroy();
-    redirect('auth/authorization');
+    redirect('authorization');
   }
   ?>
   <div class="wrapper">
@@ -32,7 +32,7 @@
       </ul>
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a class="nav-link" href="<?= base_url()?>auth/authorization/logout" role="button">
+          <a class="nav-link" href="<?= base_url()?>authorization/logout" role="button">
             <b>LOGOUT</b>
           </a>
         </li>
@@ -94,7 +94,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="<?= base_url()?>admin/profile" class="nav-link">
+              <a href="<?= base_url()?>admin/transaksi" class="nav-link">
                 <i class="nav-icon fas fa-th"></i>
                 <p>
                   Laporan

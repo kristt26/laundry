@@ -23,7 +23,7 @@ class Authorization extends CI_Controller
         $result = $this->UserModel->select($data);
         if (count($result)==0) {
             $this->session->set_flashdata('pesan', 'Gagal Login, error');
-            redirect('auth/Authorization');
+            redirect('authorization');
         } else {
             $this->session->set_userdata($result);
             if($result['jenis']=="Admin")
@@ -35,7 +35,7 @@ class Authorization extends CI_Controller
     function logout()
     {
         $this->session->sess_destroy();
-        redirect('auth/authorization');
+        redirect('authorization');
     }
 }
 
