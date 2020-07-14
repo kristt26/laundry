@@ -51,11 +51,6 @@
                         data-url="<?= base_url().'member/pemesanan/hapus/'.$item->kd_pemesanan?>">
                         <ion-icon name="trash-outline"></ion-icon>
                       </bottom>
-                      <?php } else{
-                            ?>
-                      <a type="bottom" class="disabled btn btn-default disabled" title="Tidak dapat di hapus" aria-disabled="true">
-                        <ion-icon name="trash-outline"></ion-icon>
-                      </a>
                       <?php }?>
                      
 
@@ -148,7 +143,7 @@
                 <select class="form-control" name="status" id="status">
                   <option value="Boking">Boking</option>
                   <option value="Proses">Proses</option>
-                  <option value="Selesai">Selesai</option>
+                  <!-- <option value="Selesai">Selesai</option> -->
                   <option value="Batal">Batal</option>
                 </select>
               </div>

@@ -18,8 +18,39 @@
   <link rel="stylesheet" href="<?= base_url();?>assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <!-- <link rel="stylesheet" href="<?= base_url();?>assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css"> -->
   <link rel="stylesheet" href="<?= base_url();?>assets/dist/css/adminlte.min.css">
+  <!-- <script src="<?= base_url();?>assets/css/print.css"></script> -->
   <script src="<?= base_url();?>assets/plugins/jquery/jquery.min.js"></script>
   <script src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
+  <style>
+    .print-header {
+    display: none;
+    }
+
+    .print-body {
+        display: none;
+    }
+
+    @media print {
+        .print-header {
+            display: block;
+            text-align: center;
+        }
+        .print-body {
+            display: block;
+            text-align: left;
+        }
+        @page { size: landscape; }
+    }
+    .center {
+      margin: 0;
+      position: absolute;
+      align-items: center;
+      top: 50%;
+      left: 50%;
+      -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+    }
+  </style>
   
 </head>
 <body class="hold-transition sidebar-mini">
@@ -61,6 +92,14 @@
 
         <nav class="mt-2">
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <li class="nav-item">
+              <a href="<?= base_url()?>admin/home" class="nav-link">
+                <i class="nav-icon fas fa-tasks"></i>
+                <p>
+                  Home
+                </p>
+              </a>
+            </li>
             <li class="nav-item">
               <a href="<?= base_url()?>admin/profile" class="nav-link">
                 <i class="nav-icon fas fa-tasks"></i>

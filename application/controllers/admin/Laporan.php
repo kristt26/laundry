@@ -15,7 +15,8 @@ class laporan extends CI_Controller
     {
 
         $title['title'] = ['header'=>'Laporan', 'dash'=>'Laporan'];
-        $data = $this->TransaksiModel->select();
+        // $data = $this->TransaksiModel->select();
+        $data = ['transaksi'=>array(), 'pemesanan'=>array()];
         $this->load->view('admin/template/header', $title);
         $this->load->view('admin/laporan', $data);
         $this->load->view('admin/template/footer');

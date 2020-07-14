@@ -22,11 +22,21 @@ class Transaksi extends CI_Controller
     function simpan()
     {
         $data = $this->input->post();
-        $result = $this->TransaksiModel->insert($data);
-        if($result)
-            $this->session->set_flashdata('pesan', 'Transaksi berhasil disimpan, success');
-        else
-            $this->session->set_flashdata('pesan', 'Transaksi gagal disimpan, error');
+        if($data['kd_transaksi']==''){
+            $result = $this->TransaksiModel->insert($data);
+            if($result)
+                $this->session->set_flashdata('pesan', 'Transaksi berhasil disimpan, success');
+            else
+                $this->session->set_flashdata('pesan', 'Transaksi gagal disimpan, error');
+        }else{
+            $data = $this->input->post();
+            $result = $this->TransaksiModel->update($data);
+            if($result)
+                $this->session->set_flashdata('pesan', 'Transaksi berhasil di diubah, success');
+            else
+                $this->session->set_flashdata('pesan', 'Transaksi gagal diubah, error');
+        }
+        
         redirect('admin/transaksi');
     }
     function ubah()

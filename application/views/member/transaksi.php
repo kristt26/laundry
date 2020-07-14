@@ -8,6 +8,7 @@
       <table class="table table-bordered">
               <thead  class="bg-warning">
                 <tr>
+                  <th>kd_pemesanan</th>
                   <th>Tanggal Ambil</th>
                   <th>Jenis Pakaian</th>
                   <th>Berat</th>
@@ -19,6 +20,7 @@
                   $no = 1;
                   foreach($data as $item):?>
                   <tr>
+                      <td><?= $item->kd_pemesanan?></td>
                       <td><?= $item->tgl_ambil?></td>
                       <td><?= $item->jenis_type?></td>
                       <td><?= $item->berat?></td>

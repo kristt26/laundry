@@ -44,8 +44,7 @@ class Pemesanan extends CI_Controller
             $this->session->set_flashdata('pesan', 'Data gagal di hapus, error');
         }
 
-        redirect('admin/pegawai');
+        redirect('member/pemesanan');
     }
 }
 
-/* End of file Controllername.php */

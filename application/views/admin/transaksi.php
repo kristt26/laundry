@@ -20,6 +20,7 @@
           <div class="form-group row">
             <label for="tgl_ambil" class="col-sm-4 col-form-label">Tanggal Ambil</label>
             <div class="col-sm-8">
+              <input type="hidden" class="form-control" name="kd_transaksi" id="kd_transaksi" required>
               <input type="date" class="form-control" name="tgl_ambil" id="tgl_ambil" required>
             </div>
           </div>

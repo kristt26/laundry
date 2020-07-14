@@ -7,15 +7,15 @@
       <form action="<?= base_url()?>admin/pegawai/simpan" method="post" enctype="multipart/form-data">
         <div class="card-body">
           <div class="form-group row">
-            <label for="namaPegawai" class="col-sm-2 col-form-label">Nama</label>
-            <div class="col-sm-10">
+            <label for="namaPegawai" class="col-sm-3 col-form-label">Nama</label>
+            <div class="col-sm-9">
               <input type="hidden" class="form-control" name="kd_pegawai" id="kd_pegawai">
               <input type="text" class="form-control" name="nama_pegawai" id="namaPegawai" placeholder="Nama pegawai" required>
             </div>
           </div>
           <div class="form-group row">
-            <label for="bagian" class="col-sm-2 col-form-label">Bagian</label>
-            <div class="col-sm-10">
+            <label for="bagian" class="col-sm-3 col-form-label">Bagian</label>
+            <div class="col-sm-9">
               <input type="text" class="form-control" name="bagian" id="bagian" placeholder="Bagian" required>
             </div>
           </div>
@@ -46,7 +46,7 @@
               $no = 1;
               foreach($data as $item):?>
               <tr>
-                <td><?= $no?></td>
+                <td><?= $no++?></td>
                 <td><?= $item->nama_pegawai?></td>
                 <td><?= $item->bagian?></td>
                 <td>

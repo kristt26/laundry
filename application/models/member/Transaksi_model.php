@@ -13,6 +13,6 @@ class Transaksi_model extends CI_Model {
             LEFT JOIN `pelanggan` ON `pelanggan`.`kd_pelanggan` =
             `pemesanan`.`kd_pelanggan`
         WHERE pelanggan.kd_pelanggan='$kd_pelanggan'");
-        return $data;
+        return $query->result();
     }
 }

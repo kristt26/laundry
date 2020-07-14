@@ -26,44 +26,54 @@
                     </div>
                     <div class="col-sm-3">
                         <div class="d-flex justify-content-start">
-                            <button class="btn btn-primary" id="konvert" style="margin-right:12px;">Cetak</button>
+                            <button class="btn btn-primary" id="cetak" style="margin-right:12px;">Cetak</button>
                             <div id="tombolPdf"></div>
-                            <button class="btn btn-primary pdfconvert" target="_blank"
-                                data-Url="<?= base_url()?>admin/laporan/CetakPDF">PDF</button>
+                            <!-- <button class="btn btn-primary pdfconvert" target="_blank"
+                                data-Url="<?= base_url()?>admin/laporan/CetakPDF">PDF</button> -->
                         </div>
                     </div>
                 </div>
-
-
-                <table id="example1" class="table table-bordered" id="konten">
-                    <thead>
-                        <tr>
-                            <th style="width: 10px">No</th>
-                            <th class="text-center">Kode Pemesanan</th>
-                            <th class="text-center">Tanggal Ambil</th>
-                            <th class="text-center">Jenis</th>
-                            <th class="text-center">Berat (Kg)</th>
-                            <th class="text-center">Jumlah</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tblBykeLists">
-                        <?php
-              $no =1;
-              foreach($transaksi as $item):?>
-                        <tr>
-                            <td><?= $no?></td>
-                            <td><?= $item->kd_pemesanan?></td>
-                            <td><?= $item->tgl_ambil?></td>
-                            <td><?= $item->jenis_type?></td>
-                            <td><?= $item->berat?></td>
-                            <td><?= $item->jumlah?></td>
-                        </tr>
-                        <?php 
-              $no ++;
-            endforeach;
-            ?>
-                    </tbody>
-                </table>
+                <div id="data-print">
+                  <div class="print-header">
+                    <center>
+                    <h3>LAPORAN TRANSAKSI</h3>
+                      <h4>Tanggal <span id="tgllaporan"></span> </h4>
+                    </center>
+                  </div>
+                  <table id="example1" class="table table-bordered" id="konten">
+                      <thead>
+                          <tr>
+                              <th style="width: 10px">No</th>
+                              <th class="text-center">Kode Pemesanan</th>
+                              <th class="text-center">Nama</th>
+                              <th class="text-center">Alamat</th>
+                              <th class="text-center">Tanggal Ambil</th>
+                              <th class="text-center">Jenis</th>
+                              <th class="text-center">Berat (Kg)</th>
+                              <th class="text-center">Jumlah</th>
+                          </tr>
+                      </thead>
+                      <tbody id="tblBykeLists">
+                          <?php
+                        $no =1;
+                        foreach($transaksi as $item):?>
+                          <tr>
+                              <td><?= $no?></td>
+                              <td><?= $item->kd_pemesanan?></td>
+                              <td><?= $item->nama?></td>
+                              <td><?= $item->alamat?></td>
+                              <td><?= $item->tgl_ambil?></td>
+                              <td><?= $item->jenis_type?></td>
+                              <td><?= $item->berat?></td>
+                              <td><?= $item->jumlah?></td>
+                          </tr>
+                          <?php 
+                          $no ++;
+                        endforeach;
+                        ?>
+                      </tbody>
+                  </table>
+                </div>
             </div>
         </div>
     </div>
@@ -91,6 +101,15 @@ $(function() {
         //     'tglakhir': a[1]
         // };
         // $("#tblBykeLists").append(html);
+        var tgl1 = $("#reservation").val();
+            var a = tgl1.split(' - ');
+            var dataa = {
+                'tglawal': a[0],
+                'tglakhir': a[1]
+            };
+        var datatanggal = "Dari Tanggal " + convertanggal(a[0]) + " s/d " + convertanggal(a[0]);
+        $("#tgllaporan").text(datatanggal);
+
         bsCustomFileInput.init();
     });
     $(document).ready(function() {
@@ -100,13 +119,14 @@ $(function() {
         var jenis_type;
         var berat;
         var jumlah;
+        var dataa;
         // get Edit Product
         $('.caridata').on('click', function() {
             $('#tblBykeLists').children('tr').remove();
             const tgl = $("#reservation").val();
             const Url = $(this).data('url');
             var a = tgl.split(' - ');
-            var dataa = {
+            dataa = {
                 'tglawal': a[0],
                 'tglakhir': a[1]
             };
@@ -115,10 +135,13 @@ $(function() {
                 url: Url,
                 data: dataa,
                 success: function(data) {
+                  if(data == '[]'){
+                    swal("Data tidak di temukan", "");
+                  }
                     $data = JSON.parse(data);
                     $.each($data, function(index, value) {
                         var html = "<tr><td>" + Number(1 + index) +
-                            "</td><td>" + value.kd_pemesanan + "</td><td>" +
+                            "</td><td>" + value.kd_pemesanan + "</td><td>" + value.nama + "</td><td>" + value.alamat + "</td><td>" +
                             value.tgl_ambil + "</td><td>" + value
                             .jenis_type + "</td><td>" + value.berat +
                             "</td><td>" + value.jumlah + "</td></tr>";

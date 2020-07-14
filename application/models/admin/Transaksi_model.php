@@ -3,8 +3,8 @@
 class Transaksi_model extends CI_Model {
     public function AmbilLaporan($tanggal)
     {
-        $tglawal = $tanggal[0];
-        $tglakhir = $tanggal[1];
+        $tglawal = $tanggal['tglawal'];
+        $tglakhir = $tanggal['tglakhir'];
         $query = $this->db->query("SELECT
             `pemesanan`.`kd_pemesanan`,
             `pemesanan`.`tgl_pemesanan`,
@@ -99,7 +99,7 @@ class Transaksi_model extends CI_Model {
     public function update($data)
     {
         $itemtrans = [
-            'kd_pegawai'=>$this->session->username('kd_pegawai'),
+            'kd_pegawai'=>$this->session->userdata('kd_pegawai'),
             'tgl_ambil'=>$data['tgl_ambil'],
             'jenis_type'=>$data['jenis_type'],
             'berat'=>$data['berat'],

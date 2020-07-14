@@ -71,7 +71,7 @@ class Pemesanan_model extends CI_Model {
         $item = [
             'status'=>'Batal'
         ];
-        $this->db->where('kd_pemesanan', $data['kd_pemesanan']);
+        $this->db->where('kd_pemesanan', $kd_pemesanan);
         if($this->db->update('pemesanan', $item))
             return true;
         else
