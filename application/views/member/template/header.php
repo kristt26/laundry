@@ -42,7 +42,7 @@
       <!-- Right navbar links -->
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a class="nav-link" href="<?= base_url()?>auth/authorization/logout" role="button">
+          <a class="nav-link" href="<?= base_url()?>authorization/logout" role="button">
             <b>LOGOUT</b>
           </a>
         </li>
@@ -57,7 +57,7 @@
       <div class="sidebar">
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
           <div class="info">
-            <a href="#" class="d-block">Alexander Pierce</a>
+            <a href="#" class="d-block"><?= $this->session->userdata('nama_pegawai');?></a>
           </div>
         </div>
 
@@ -80,7 +80,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="<?= base_url()?>member/pelanggan" class="nav-link">
+              <a href="<?= base_url()?>member/transaksi" class="nav-link">
                 <i class="nav-icon fas fa-th"></i>
                 <p>
                   Transaksi

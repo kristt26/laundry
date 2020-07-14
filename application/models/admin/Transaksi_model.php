@@ -3,8 +3,8 @@
 class Transaksi_model extends CI_Model {
     public function AmbilLaporan($tanggal)
     {
-        $tglawal = str_replace('/','-',$tanggal['tglawal']);
-        $tglakhir = str_replace('/','-',$tanggal['tglakhir']);
+        $tglawal = $tanggal[0];
+        $tglakhir = $tanggal[1];
         $query = $this->db->query("SELECT
             `pemesanan`.`kd_pemesanan`,
             `pemesanan`.`tgl_pemesanan`,
@@ -28,7 +28,7 @@ class Transaksi_model extends CI_Model {
             LEFT JOIN `pemesanan` ON `pemesanan`.`id` = `transaksi`.`id_pemesanan`
             LEFT JOIN `pelanggan` ON `pelanggan`.`kd_pelanggan` =
             `pemesanan`.`kd_pelanggan`
-        WHERE tgl_ambil > '$tglawal' AND tgl_ambil<'$tglakhir'");
+        WHERE tgl_ambil >= '$tglawal' AND tgl_ambil<='$tglakhir'");
         return $query->result();
     }
     function select()

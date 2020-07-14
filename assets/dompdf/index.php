@@ -23,7 +23,7 @@ require_once 'autoload.inc.php';
 				<td>data</td>
 			</tr>
 		</tbody>
-	</table>"
+	</table>";
 	$dompdf->loadHtml('<h1>Welcome to CodexWorld.com</h1>');
 
 	// (Optional) Setup the paper size and orientation

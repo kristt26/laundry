@@ -13,11 +13,19 @@ class laporan extends CI_Controller
 
     public function index()
     {
+
         $title['title'] = ['header'=>'Laporan', 'dash'=>'Laporan'];
         $data = $this->TransaksiModel->select();
         $this->load->view('admin/template/header', $title);
         $this->load->view('admin/laporan', $data);
         $this->load->view('admin/template/footer');
+    }
+    public function CetakPDF()
+    {
+        $this->load->library('mypdf');
+        $view = "admin/cetaklaporan";
+        $data = $this->TransaksiModel->select();
+        $this->mypdf->generate($view,$data);
     }
     public function getprint()
     {
