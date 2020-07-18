@@ -79,7 +79,7 @@
         'tglawal': a[0],
         'tglakhir': a[1]
       };
-      var datatanggal = "Dari Tanggal " + convertanggal(a[0]) + " s/d " + convertanggal(a[0]);
+      var datatanggal = "Dari Tanggal " + convertanggal(a[0]) + " s/d " + convertanggal(a[1]);
       // var options = { mode : "popup", popClose : true, extraHead : '<meta charset="utf-8"/>,<meta http-equiv="X-UA-Compatible" content="IE=edge"/>,<style rel="stylesheet" type="text/css" media="print">@page { size: landscape; }</style>' };
       $("#tgllaporan").text(datatanggal);
       $('.action').css('display', 'none');
