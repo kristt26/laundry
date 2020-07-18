@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" ng-app="app" ng-controller="laporanController">
     <div class="col-md-12">
         <div class="card card-warning">
             <div class="card-header">
@@ -16,10 +16,11 @@
                                             <i class="far fa-calendar-alt"></i>
                                         </span>
                                     </div>
-                                    <input type="text" class="form-control float-right" id="reservation">
+                                    <input type="text" class="form-control float-right" id="reservation" ng-model="tanggal">
                                     <button class="btn btn-primary caridata"
                                         data-Url="<?= base_url()?>admin/laporan/getprint"><i
-                                            class="fa fa-search"></i></button>
+                                            class="fa fa-search" ng-click="Cari()"></i></button>
+                                            <button class="btn btn-primary" id="printButton">Print</button>
                                 </div>
                             </div>
                         </div>
@@ -33,14 +34,15 @@
                         </div>
                     </div>
                 </div>
-                <div id="data-print">
+                <div id="printElement">
                   <div class="print-header">
                     <center>
                     <h3>LAPORAN TRANSAKSI</h3>
                       <h4>Tanggal <span id="tgllaporan"></span> </h4>
+                      <hr><br>
                     </center>
                   </div>
-                  <table id="example1" class="table table-bordered" id="konten">
+                  <table class="table table-bordered" id="konten" width="100%">
                       <thead>
                           <tr>
                               <th style="width: 10px">No</th>
@@ -48,29 +50,41 @@
                               <th class="text-center">Nama</th>
                               <th class="text-center">Alamat</th>
                               <th class="text-center">Tanggal Ambil</th>
+                              <th class="text-center">Tanggal Antar</th>
                               <th class="text-center">Jenis</th>
                               <th class="text-center">Berat (Kg)</th>
                               <th class="text-center">Jumlah</th>
+                              <th class="text-center">Bayar</th>
+                              <th class="text-center">Total Bayar</th>
                           </tr>
                       </thead>
-                      <tbody id="tblBykeLists">
-                          <?php
-                        $no =1;
-                        foreach($transaksi as $item):?>
-                          <tr>
-                              <td><?= $no?></td>
-                              <td><?= $item->kd_pemesanan?></td>
-                              <td><?= $item->nama?></td>
-                              <td><?= $item->alamat?></td>
-                              <td><?= $item->tgl_ambil?></td>
-                              <td><?= $item->jenis_type?></td>
-                              <td><?= $item->berat?></td>
-                              <td><?= $item->jumlah?></td>
-                          </tr>
-                          <?php 
-                          $no ++;
-                        endforeach;
-                        ?>
+                      <tbody ng-repeat="trx in datas">
+                            <tr>
+                                <td>{{$index+1}}</td>
+                                <td>{{trx.kd_pemesanan}}</td>
+                                <td>{{trx.nama}}</td>
+                                <td>{{trx.alamat}}</td>
+                                <td>{{trx.tgl_pemesanan}}</td>
+                                <td>{{trx.tgl_ambil}}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>{{trx.total}}</td>
+                            </tr>
+                            <tr ng-repeat="detail in trx.detail">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>{{detail.jenis}}</td>
+                                <td>{{detail.berat}}</td>
+                                <td>{{detail.jumlah}}</td>
+                                <td>{{detail.bayar}}</td>
+                                <td></td>
+                            </tr>
                       </tbody>
                   </table>
                 </div>
@@ -79,6 +93,27 @@
     </div>
 </div>
 <script>
+    angular.module('app', [])
+    .controller('laporanController', function($scope, $http){
+        $scope.tanggal;
+        $scope.datas = [];
+        $scope.Cari = ()=>{
+            var a = $scope.tanggal.split(' - ');
+            dataa = {
+                'tglawal': a[0],
+                'tglakhir': a[1]
+            };
+            $http({
+                method: 'post',
+                url: '<?= base_url()?>admin/laporan/getprint',
+                data: dataa
+            }).then(params=>{
+                $scope.datas = params.data;
+                console.log($scope.datas);
+            })
+        }
+        
+    })
 $(function() {
     var doc = new jsPDF();
     $('#konvert').click(function () {   
@@ -121,36 +156,36 @@ $(function() {
         var jumlah;
         var dataa;
         // get Edit Product
-        $('.caridata').on('click', function() {
-            $('#tblBykeLists').children('tr').remove();
-            const tgl = $("#reservation").val();
-            const Url = $(this).data('url');
-            var a = tgl.split(' - ');
-            dataa = {
-                'tglawal': a[0],
-                'tglakhir': a[1]
-            };
-            $.ajax({
-                type: 'POST',
-                url: Url,
-                data: dataa,
-                success: function(data) {
-                  if(data == '[]'){
-                    swal("Data tidak di temukan", "");
-                  }
-                    $data = JSON.parse(data);
-                    $.each($data, function(index, value) {
-                        var html = "<tr><td>" + Number(1 + index) +
-                            "</td><td>" + value.kd_pemesanan + "</td><td>" + value.nama + "</td><td>" + value.alamat + "</td><td>" +
-                            value.tgl_ambil + "</td><td>" + value
-                            .jenis_type + "</td><td>" + value.berat +
-                            "</td><td>" + value.jumlah + "</td></tr>";
-                        $("#tblBykeLists").append(html);
-                    });
+        // $('.caridata').on('click', function() {
+        //     $('#tblBykeLists').children('tr').remove();
+        //     const tgl = $("#reservation").val();
+        //     const Url = $(this).data('url');
+        //     var a = tgl.split(' - ');
+        //     dataa = {
+        //         'tglawal': a[0],
+        //         'tglakhir': a[1]
+        //     };
+        //     $.ajax({
+        //         type: 'POST',
+        //         url: Url,
+        //         data: dataa,
+        //         success: function(data) {
+        //           if(data == '[]'){
+        //             swal("Data tidak di temukan", "");
+        //           }
+        //             $data = JSON.parse(data);
+        //             $.each($data, function(index, value) {
+        //                 var html = "<tr><td>" + Number(1 + index) +
+        //                     "</td><td>" + value.kd_pemesanan + "</td><td>" + value.nama + "</td><td>" + value.alamat + "</td><td>" +
+        //                     value.tgl_ambil + "</td><td>" + value
+        //                     .jenis_type + "</td><td>" + value.berat +
+        //                     "</td><td>" + value.jumlah + "</td></tr>";
+        //                 $("#tblBykeLists").append(html);
+        //             });
 
-                }
-            });
-        });
+        //         }
+        //     });
+        // });
 
         $('.pdfconvert').on('click', function() {
             const tgl = $("#reservation").val();

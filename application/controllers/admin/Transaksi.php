@@ -34,12 +34,11 @@ class Transaksi extends CI_Controller
                 echo json_encode($message);
             }
         }else{
-            $data = $this->input->post();
             $result = $this->TransaksiModel->update($data);
-            if($result)
-                $this->session->set_flashdata('pesan', 'Transaksi berhasil di diubah, success');
-            else
-                $this->session->set_flashdata('pesan', 'Transaksi gagal diubah, error');
+            if($result){
+                $message = $this->TransaksiModel->select();
+                echo json_encode($message);
+            }
         }
     }
     function ubah()

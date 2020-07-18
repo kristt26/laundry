@@ -30,7 +30,7 @@ class laporan extends CI_Controller
     }
     public function getprint()
     {
-        $data = $this->input->post();
+        $data = json_decode($this->security->xss_clean($this->input->raw_input_stream), true);
         $result = $this->TransaksiModel->AmbilLaporan($data);
         echo json_encode($result);
     }

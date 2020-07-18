@@ -38,6 +38,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/0.9.0rc1/jspdf.min.js"></script>
   <script src="<?= base_url();?>assets/plugins/daterangepicker/daterangepicker.js"></script>
   <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery.PrintArea.js"></script>
+  <script type="text/javascript" src="<?php echo base_url();?>assets/js/print.min.js"></script>
   <script type="text/javascript">
   
     $(document).ready(function () {

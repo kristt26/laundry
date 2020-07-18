@@ -5,6 +5,32 @@ class Transaksi_model extends CI_Model {
     {
         $tglawal = $tanggal['tglawal'];
         $tglakhir = $tanggal['tglakhir'];
+        // $query = $this->db->query("SELECT
+        //     `transaksi`.*,
+        //     `pemesanan`.`kd_pemesanan`,
+        //     `pemesanan`.`tgl_pemesanan`,
+        //     `pemesanan`.`status`,
+        //     `pelanggan`.`kd_pelanggan`,
+        //     `pelanggan`.`nama`,
+        //     `pelanggan`.`alamat`,
+        //     `pelanggan`.`no_hp`,
+        //     `pelanggan`.`jk`,
+        //     `detail`.`berat`,
+        //     `detail`.`jumlah`,
+        //     `detail`.`bayar`,
+        //     `jenispakaian`.`jenis`,
+        //     `jenispakaian`.`harga`,
+        //     `jenispakaian`.`statusbiaya`
+        // FROM
+        //     `transaksi`
+        //     LEFT JOIN `pemesanan` ON `pemesanan`.`id` = `transaksi`.`id_pemesanan`
+        //     LEFT JOIN `pelanggan` ON `pemesanan`.`kd_pelanggan` =
+        // `pelanggan`.`kd_pelanggan`
+        //     LEFT JOIN `detail` ON `transaksi`.`kd_transaksi` = `detail`.`kd_transaksi`
+        //     LEFT JOIN `jenispakaian` ON `detail`.`idjenispakaian` =
+        // `jenispakaian`.`idjenispakaian`
+        // WHERE tgl_ambil >= '$tglawal' AND tgl_ambil<='$tglakhir'");
+        // return $query->result();
         $query = $this->db->query("SELECT
             `pemesanan`.`kd_pemesanan`,
             `pemesanan`.`tgl_pemesanan`,
@@ -14,6 +40,7 @@ class Transaksi_model extends CI_Model {
             `transaksi`.`kd_transaksi`,
             `transaksi`.`kd_pegawai`,
             `transaksi`.`tgl_ambil`,
+            `transaksi`.`total`,
             `pelanggan`.`nama`,
             `pelanggan`.`kd_pelanggan` AS `kd_pelanggan1`,
             `pelanggan`.`alamat`,
@@ -26,7 +53,12 @@ class Transaksi_model extends CI_Model {
             LEFT JOIN `pelanggan` ON `pelanggan`.`kd_pelanggan` =
             `pemesanan`.`kd_pelanggan`
         WHERE tgl_ambil >= '$tglawal' AND tgl_ambil<='$tglakhir'");
-        return $query->result();
+        $transaksi = $query->result();
+        foreach ($transaksi as $key => $value) {
+            $detail = $this->db->get_where('detail', array('kd_transaksi'=>$value->kd_transaksi));
+            $value->detail = $detail->result();
+        }
+        return $transaksi;
     }
     function select()
     {
@@ -40,6 +72,7 @@ class Transaksi_model extends CI_Model {
             `transaksi`.`kd_transaksi`,
             `transaksi`.`kd_pegawai`,
             `transaksi`.`tgl_ambil`,
+            `transaksi`.`total`,
             `pelanggan`.`nama`,
             `pelanggan`.`kd_pelanggan` AS `kd_pelanggan1`,
             `pelanggan`.`alamat`,
@@ -53,8 +86,16 @@ class Transaksi_model extends CI_Model {
             `pemesanan`.`kd_pelanggan`");
         $transaksi = $query->result();
         foreach ($transaksi as $key => $value) {
-            $query= $this->db->get_where('detail', array('kd_transaksi'=>$value->kd_transaksi));
-            $value->detail = $query->result();
+            $query= $this->db->query("SELECT
+                `detail`.*,
+                `jenispakaian`.`jenis`,
+                `jenispakaian`.`harga`,
+                `jenispakaian`.`statusbiaya`
+            FROM
+                `detail`
+                LEFT JOIN `jenispakaian` ON `detail`.`idjenispakaian` =
+            `jenispakaian`.`idjenispakaian` WHERE kd_transaksi='$value->kd_transaksi'");
+            $value->jenis = $query->result();
         }
         $data['transaksi']= $transaksi;
 
@@ -111,11 +152,10 @@ class Transaksi_model extends CI_Model {
     public function update($data)
     {
         $itemtrans = [
+            'id_pemesanan'=>$data['id_pemesanan'],
             'kd_pegawai'=>$this->session->userdata('kd_pegawai'),
             'tgl_ambil'=>$data['tgl_ambil'],
-            'jenis_type'=>$data['jenis_type'],
-            'berat'=>$data['berat'],
-            'jumlah'=>$data['jumlah']
+            'total'=>$data['total'],
         ];
         $this->db->where('kd_transaksi', $data['kd_transaksi']);
         $result = $this->db->update('transaksi', $itemtrans);
