@@ -14,20 +14,25 @@ class Transaksi extends CI_Controller
     public function index()
     {
         $title['title'] = ['header' => 'Transaksi', 'dash' => 'Transaksi'];
-        $data = $this->TransaksiModel->select();
+        // $data = $this->TransaksiModel->select();
         $this->load->view('admin/template/header', $title);
-        $this->load->view('admin/transaksi', $data);
+        $this->load->view('admin/transaksi');
         $this->load->view('admin/template/footer');
+    }
+    public function gettransaksi()
+    {
+        $data = $this->TransaksiModel->select();
+        echo json_encode($data);
     }
     function simpan()
     {
-        $data = $this->input->post();
-        if($data['kd_transaksi']==''){
+        $data = json_decode($this->security->xss_clean($this->input->raw_input_stream), true);
+        if(!isset($data['kd_transaksi'])){
             $result = $this->TransaksiModel->insert($data);
-            if($result)
-                $this->session->set_flashdata('pesan', 'Transaksi berhasil disimpan, success');
-            else
-                $this->session->set_flashdata('pesan', 'Transaksi gagal disimpan, error');
+            if($result){
+                $message = $this->TransaksiModel->select();
+                echo json_encode($message);
+            }
         }else{
             $data = $this->input->post();
             $result = $this->TransaksiModel->update($data);
@@ -36,8 +41,6 @@ class Transaksi extends CI_Controller
             else
                 $this->session->set_flashdata('pesan', 'Transaksi gagal diubah, error');
         }
-        
-        redirect('admin/transaksi');
     }
     function ubah()
     {

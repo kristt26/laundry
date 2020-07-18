@@ -1,45 +1,34 @@
-<div class="row">
+<div class="row" ng-app="app" ng-controller="transaksiController">
   <div class="col-md-4">
     <div class="card card-warning">
       <div class="card-header">
         <h3 class="card-title">Input Transaksi</h3>
       </div>
-      <form action="<?= base_url()?>admin/transaksi/simpan" method="post" enctype="multipart/form-data">
+      <form ng-submit="simpan()" enctype="multipart/form-data">
         <div class="card-body">
           <div class="form-group row kd_pemesanan" id="kd_pemesanan">
             <label for="id" class="col-sm-4 col-form-label">Kode Pemesanan</label>
             <div class="col-sm-8">
-              <select name="id" class="form-control select2" id="id" style="width: 100%;">
+              <select name="id" class="form-control select2" ng-model="pemesanan" id="id" style="width: 100%;" ng-change="model.id_pemesanan = pemesanan">
                 <option></option>
-                <?php foreach($pemesanan as $item):?>
-                  <option value='<?= $item->id?>'><?= $item->kd_pemesanan?></option>
-                <?php endforeach;?>
+                <option ng-repeat="item in datas.pemesanan" value="{{item.id}}">{{item.kd_pemesanan}}</option>
               </select>
             </div>
           </div>
           <div class="form-group row">
             <label for="tgl_ambil" class="col-sm-4 col-form-label">Tanggal Ambil</label>
             <div class="col-sm-8">
-              <input type="hidden" class="form-control" name="kd_transaksi" id="kd_transaksi" required>
-              <input type="date" class="form-control" name="tgl_ambil" id="tgl_ambil" required>
+              <input type="date" class="form-control" name="tgl_ambil" id="tgl_ambil" ng-model="model.tgl_ambil" required>
             </div>
           </div>
           <div class="form-group row">
             <label for="jenis_type" class="col-sm-4 col-form-label">Jenis Type</label>
             <div class="col-sm-8">
-              <input class="form-control" name="jenis_type" id="jenis_type" placeholder="jenis_type" required>
-            </div>
-          </div>
-          <div class="form-group row">
-            <label for="berat" class="col-sm-4 col-form-label">Berat</label>
-            <div class="col-sm-8">
-              <input type="number" class="form-control" name="berat" id="berat" placeholder="Dalam Kg" required>
-            </div>
-          </div>
-          <div class="form-group row">
-            <label for="jumlah" class="col-sm-4 col-form-label">Jumlah</label>
-            <div class="col-sm-8">
-              <input type="number" class="form-control" name="jumlah" id="jumlah" placeholder="Jumlah satuan potong" required>
+              <select class="form-control select2" ng-options="item as item.jenis for item in datas.jenis" ng-model="jenis" ng-change="selected(jenis)"></select>
+              <!-- <select class="form-control select2" ng-model="jenis" style="width: 100%;" ng-change="model.jenis.idjenispakaian = jenis">
+                <option></option>
+                <option ng-repeat="item in datas.jenis" value="{{item.idjenispakaian}}">{{item.jenis}}</option>
+              </select> -->
             </div>
           </div>
         </div>
@@ -53,98 +42,168 @@
   <div class="col-md-8">
     <div class="card card-warning">
       <div class="card-header">
-        <h3 class="card-title">Data Pelanggan</h3>
+        <h3 class="card-title">Detail</h3>
       </div>
       <div class="card-body">
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th style="width: 10px">No</th>
-              <th>Kode Pemesanan</th>
-              <th>Tanggal Ambil</th>
-              <th>Jenis</th>
-              <th>Berat<br>(Kg)</th>
-              <th>Jumlah</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php
-              $no =1;
-              foreach($transaksi as $item):?>
-            <tr>
-              <td><?= $no?></td>
-              <td><?= $item->kd_pemesanan?></td>
-              <td><?= $item->tgl_ambil?></td>
-              <td><?= $item->jenis_type?></td>
-              <td><?= $item->berat?></td>
-              <td><?= $item->jumlah?></td>
-              <td>
-                <div class="tombol">
-                  <bottom class="btn btn-default ubahTransaksi" data-kd_transaksi="<?= $item->kd_transaksi?>"
-                    data-tgl_ambil="<?= $item->tgl_ambil?>" data-jenis_type="<?= $item->jenis_type?>" data-berat="<?= $item->berat?>"
-                    data-jumlah="<?= $item->jumlah?>">
-                    <ion-icon name="create-outline"></ion-icon>
-                  </bottom>
-                  <!-- <bottom class="btn btn-danger hapuspelanggan"
-                    data-url="<?= base_url().'admin/pelanggan/hapus/'.$item->kd_transaksi?>">
-                    <ion-icon name="trash-outline"></ion-icon>
-                  </bottom> -->
-                </div>
-              </td>
-            </tr>
-            <?php 
-              $no ++;
-            endforeach;
-            ?>
-          </tbody>
-        </table>
+      <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th width = "35%">Jenis</th>
+                <th>Berat</th>
+                <th>Jumlah</th>
+                <th width = "40%">Bayar</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="item in model.jenis">
+                <td><input type="text" class="form-control" ng-model="item.jenis" disabled></td>
+                <td><input type="number" class="form-control" ng-model="item.berat" ng-change = "hitung()"></td>
+                <td><input type="number" class="form-control" ng-model="item.jumlah" ng-change = "hitung()"></td>
+                <td>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">Rp. </span>
+                    </div>
+                    <input type="text" class="form-control text-right" ng-model="item.bayar" format="currency" disabled>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="3"></td>
+                <td>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">Rp. </span>
+                    </div>
+                    <input type="text" class="form-control text-right" ng-model="model.total" format="currency" disabled>
+                  </div>
+                </td>
+                
+              </tr>
+            </tfoot>
+          </table>
       </div>
     </div>
   </div>
-</div>
+  <div class="col-md-12">
+    <div class="card card-warning">
+        <div class="card-header">
+          <h3 class="card-title">Data Pelanggan</h3>
+        </div>
+        <div class="card-body">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th style="width: 10px">No</th>
+                <th>Kode Pemesanan</th>
+                <th>Tanggal Ambil</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="item in datas.transaksi">
+                <td>{{$index+1}}</td>
+                <td>{{item.kd_pemesanan}}</td>
+                <td>{{item.tgl_ambil}}</td>
+                <td>
+                  <div class="tombol">
+                    <bottom class="btn btn-default" ng-click="Ubah"><ion-icon name="create-outline"></ion-icon></bottom>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 <script>
+  angular.module('app', [])
+  .directive('format', ['$filter', function ($filter) {
+    return {
+        require: '?ngModel',
+        link: function (scope, elem, attrs, ctrl) {
+            if (!ctrl) return;
+
+            ctrl.$formatters.unshift(function (a) {
+              return $filter(attrs.format)(ctrl.$modelValue, attrs.format == 'currency' ? '' : null)
+            });
+
+            elem.bind('blur', function(event) {
+                var plainNumber = elem.val().replace(/[^\d|\-+|\.+]/g, '');
+                elem.val($filter(attrs.format)(plainNumber));
+            });
+        }
+    };
+  }])
+  .controller('transaksiController', function($scope, $http){
+    $scope.datas =[];
+    $scope.model={};
+    $scope.model.jenis = [];
+    $scope.model.tgl_ambil = new Date();
+    $scope.model.total =0;
+    $http({
+      method: 'get',
+      url: '<?=base_url()?>admin/transaksi/gettransaksi',
+    }).then(response=>{
+      $scope.datas = response.data;
+      console.log($scope.datas);
+    })
+    $scope.selected = (item)=>{
+      if(item){
+        item.berat = 0;
+        item.jumlah = 0;
+        item.bayar = 0;
+        item.total =0;
+        $scope.model.jenis.push(angular.copy(item));
+      }
+    }
+    $scope.simpan = ()=>{
+      $http({
+        method: 'post', 
+        url: '<?=base_url()?>admin/transaksi/simpan',
+        data: $scope.model
+      }).then(response=>{
+        $scope.datas = response.data;
+        if($scope.model.kd_transaksi == undefined)
+        {
+          swal("Information!", "Berhasil di ditambahkan", "success").then((value) => {
+            $scope.model={};
+            $scope.model.jenis = [];
+            $scope.model.tgl_ambil = new Date();
+            $scope.model.total =0;
+          });
+        }else{
+          swal("Information!", "Berhasil diubah", "success").then((value) => {
+            $scope.model={};
+            $scope.model.jenis = [];
+            $scope.model.tgl_ambil = new Date();
+            $scope.model.total =0;
+          });
+        }
+      },error=>{
+        swal("Information!", "proses gagal", "error").then((value) => {
+           
+        });
+      })
+    }
+    $scope.hitung = ()=>{
+      $scope.model.total =0;
+        angular.forEach($scope.model.jenis, item=>{
+          if(item.statusbiaya=='perkilo'){
+            item.bayar = parseFloat(item.berat) * parseInt(item.harga);
+            $scope.model.total += item.bayar;
+          }else{
+            item.bayar = parseInt(item.jumlah) * parseInt(item.harga);
+            $scope.model.total += item.bayar;
+          }
+        })
+    }
+  })
   $(function () {
     $(document).ready(function () {
-      var tombol;
-      var kd_transaksi;
-      var tgl_ambil;
-      var jenis_type;
-      var berat;
-      var jumlah;
-      if (document.getElementById("tgl_ambil").value == "") {
-        $('.prosess').val('Simpan');
-      } else {
-        $('.prosess').val('Ubah');
-      }
-      // get Edit Product
-      $('.ubahTransaksi').on('click', function () {
-        $("#kd_pemesanan").hide();
-        // get data from button edit
-        kd_transaksi = $(this).data('kd_transaksi');
-        tgl_ambil = $(this).data('tgl_ambil');
-        jenis_type = $(this).data('jenis_type');
-        berat = $(this).data('berat');
-        jumlah = $(this).data('jumlah');
-        // Set data to Form Edit
-        $('#kd_transaksi').val(kd_transaksi);
-        $('#tgl_ambil').val(tgl_ambil);
-        $('#jenis_type').val(jenis_type);
-        $('#berat').val(berat);
-        $('#jumlah').val(jumlah);
-        $('.prosess').val('Ubah');
-      });
-
-      $('.clear').on('click', function () {
-        $('#kd_transaksi').val("");
-        $('#tgl_ambil').val("");
-        $('#jenis_type').val("");
-        $('#berat').val("");
-        $('#jumlah').val("");
-        $('.prosess').val('Simpan');
-        $("#kd_pemesanan").show();
-      });
-
       // get Delete Product
       $('.hapuspelanggan').on('click', function () {
         // get data from button edit

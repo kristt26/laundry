@@ -21,6 +21,8 @@
   <!-- <script src="<?= base_url();?>assets/css/print.css"></script> -->
   <script src="<?= base_url();?>assets/plugins/jquery/jquery.min.js"></script>
   <script src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
+  <script src="<?= base_url();?>assets/bower_components/angular/angular.min.js"></script>
+
   <style>
     .print-header {
     display: none;
@@ -121,6 +123,14 @@
                 <i class="nav-icon fas fa-tasks"></i>
                 <p>
                   Pelanggan
+                </p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="<?= base_url()?>admin/jenis" class="nav-link">
+                <i class="nav-icon fas fa-tasks"></i>
+                <p>
+                  Jenis Laundry
                 </p>
               </a>
             </li>
