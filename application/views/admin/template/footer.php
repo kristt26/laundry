@@ -59,7 +59,7 @@
       })
     })
     $('.select2').select2({
-      placeholder: "Pilih kode pemesanan"
+      placeholder: "Pilih item"
     });
 
     //Initialize Select2 Elements
