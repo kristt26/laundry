@@ -32,6 +32,11 @@ class Profile extends CI_Controller {
 			redirect('profile');
         }
     }
+    public function getprofile()
+    {
+        $data = $this->ProfileModel->select();
+        echo json_encode($data);
+    }
 
 }
 

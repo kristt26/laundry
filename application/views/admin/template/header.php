@@ -18,40 +18,45 @@
   <link rel="stylesheet" href="<?= base_url();?>assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <!-- <link rel="stylesheet" href="<?= base_url();?>assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css"> -->
   <link rel="stylesheet" href="<?= base_url();?>assets/dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="<?= base_url();?>assets/css/print.min.css">
   <!-- <script src="<?= base_url();?>assets/css/print.css"></script> -->
   <script src="<?= base_url();?>assets/plugins/jquery/jquery.min.js"></script>
   <script src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
   <script src="<?= base_url();?>assets/bower_components/angular/angular.min.js"></script>
 
   <style>
-    .print-header {
-    display: none;
-    }
-
-    .print-body {
+    @media screen {
+      div.print-header {
         display: none;
+      }
+
+      div.print-body {
+          display: none;
+      }
+      .center {
+        margin: 0;
+        position: absolute;
+        align-items: center;
+        top: 50%;
+        left: 50%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+      }
     }
 
     @media print {
-        .print-header {
-            display: block;
+        div.print-header {
+            /* display: block; */
+            position: fixed;
             text-align: center;
         }
-        .print-body {
-            display: block;
+        div.print-body {
+            /* display: block; */
             text-align: left;
         }
         @page { size: landscape; }
     }
-    .center {
-      margin: 0;
-      position: absolute;
-      align-items: center;
-      top: 50%;
-      left: 50%;
-      -ms-transform: translate(-50%, -50%);
-      transform: translate(-50%, -50%);
-    }
+    
   </style>
   
 </head>
