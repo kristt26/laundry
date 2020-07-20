@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="<?= base_url();?>assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
   <script src="<?= base_url();?>assets/plugins/jquery/jquery.min.js"></script>
   <link rel="stylesheet" href="<?= base_url();?>assets/css/style.css">
+  <script src="<?= base_url();?>assets/bower_components/angular/angular.min.js"></script>
   <style>
     .center {
       margin: 0;

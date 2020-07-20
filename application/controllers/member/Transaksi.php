@@ -14,10 +14,15 @@ class Transaksi extends CI_Controller
     public function index()
     {
         $title['title'] = ['header' => 'Transaksi', 'dash' => 'Transaksi'];
-        $data['data'] = $this->TransaksiModel->select();
         $this->load->view('member/template/header', $title);
-        $this->load->view('member/transaksi', $data);
+        $this->load->view('member/transaksi');
         $this->load->view('member/template/footer');
+    }
+
+    public function gettransaksi()
+    {
+        $result = $this->TransaksiModel->select();
+        echo json_encode($result);
     }
 }
 

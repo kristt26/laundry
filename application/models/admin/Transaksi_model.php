@@ -5,32 +5,6 @@ class Transaksi_model extends CI_Model {
     {
         $tglawal = $tanggal['tglawal'];
         $tglakhir = $tanggal['tglakhir'];
-        // $query = $this->db->query("SELECT
-        //     `transaksi`.*,
-        //     `pemesanan`.`kd_pemesanan`,
-        //     `pemesanan`.`tgl_pemesanan`,
-        //     `pemesanan`.`status`,
-        //     `pelanggan`.`kd_pelanggan`,
-        //     `pelanggan`.`nama`,
-        //     `pelanggan`.`alamat`,
-        //     `pelanggan`.`no_hp`,
-        //     `pelanggan`.`jk`,
-        //     `detail`.`berat`,
-        //     `detail`.`jumlah`,
-        //     `detail`.`bayar`,
-        //     `jenispakaian`.`jenis`,
-        //     `jenispakaian`.`harga`,
-        //     `jenispakaian`.`statusbiaya`
-        // FROM
-        //     `transaksi`
-        //     LEFT JOIN `pemesanan` ON `pemesanan`.`id` = `transaksi`.`id_pemesanan`
-        //     LEFT JOIN `pelanggan` ON `pemesanan`.`kd_pelanggan` =
-        // `pelanggan`.`kd_pelanggan`
-        //     LEFT JOIN `detail` ON `transaksi`.`kd_transaksi` = `detail`.`kd_transaksi`
-        //     LEFT JOIN `jenispakaian` ON `detail`.`idjenispakaian` =
-        // `jenispakaian`.`idjenispakaian`
-        // WHERE tgl_ambil >= '$tglawal' AND tgl_ambil<='$tglakhir'");
-        // return $query->result();
         $query = $this->db->query("SELECT
             `pemesanan`.`kd_pemesanan`,
             `pemesanan`.`tgl_pemesanan`,
@@ -55,7 +29,15 @@ class Transaksi_model extends CI_Model {
         WHERE tgl_ambil >= '$tglawal' AND tgl_ambil<='$tglakhir'");
         $transaksi = $query->result();
         foreach ($transaksi as $key => $value) {
-            $detail = $this->db->get_where('detail', array('kd_transaksi'=>$value->kd_transaksi));
+            $detail = $this->db->query("SELECT
+                `detail`.*,
+                `jenispakaian`.`jenis`,
+                `jenispakaian`.`harga`,
+                `jenispakaian`.`statusbiaya`
+            FROM
+                `detail`
+                LEFT JOIN `jenispakaian` ON `jenispakaian`.`idjenispakaian` =
+                `detail`.`idjenispakaian` WHERE kd_transaksi = $value->kd_transaksi");
             $value->detail = $detail->result();
         }
         return $transaksi;
