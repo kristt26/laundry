@@ -27,8 +27,8 @@
                     </div>
                     <div class="col-sm-3">
                         <div class="d-flex justify-content-start">
-                            <button class="btn btn-primary" id="cetak" style="margin-right:12px;">Cetak</button>
-                            <div id="tombolPdf"></div>
+                            <!-- <button class="btn btn-primary" id="cetak" style="margin-right:12px;">Cetak</button>
+                            <div id="tombolPdf"></div> -->
                             <!-- <button class="btn btn-primary pdfconvert" target="_blank"
                                 data-Url="<?= base_url()?>admin/laporan/CetakPDF">PDF</button> -->
                         </div>
@@ -54,36 +54,34 @@
                               <th class="text-center">Jenis</th>
                               <th class="text-center">Berat (Kg)</th>
                               <th class="text-center">Jumlah</th>
+                              <th class="text-center">Biaya Ambil</th>
+                              <th class="text-center">Biaya Antar</th>
                               <th class="text-center">Bayar</th>
-                              <th class="text-center">Total Bayar</th>
                           </tr>
                       </thead>
                       <tbody ng-repeat="trx in datas">
                             <tr>
-                                <td>{{$index+1}}</td>
-                                <td>{{trx.kd_pemesanan}}</td>
-                                <td>{{trx.nama}}</td>
-                                <td>{{trx.alamat}}</td>
-                                <td>{{trx.tgl_pemesanan}}</td>
-                                <td>{{trx.tgl_ambil}}</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>{{trx.total}}</td>
+                                <td rowspan = "{{datas.length+2}}">{{$index+1}}</td>
+                                <td rowspan = "{{datas.length+2}}">{{trx.kd_pemesanan}}</td>
+                                <td rowspan = "{{datas.length+2}}">{{trx.nama}}</td>
+                                <td rowspan = "{{datas.length+2}}">{{trx.alamat}}</td>
+                                <td rowspan = "{{datas.length+2}}">{{trx.tgl_pemesanan}}</td>
+                                <td rowspan = "{{datas.length+2}}">{{trx.tgl_ambil}}</td>
+                                
+                                
                             </tr>
                             <tr ng-repeat="detail in trx.detail">
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
                                 <td>{{detail.jenis}}</td>
                                 <td>{{detail.berat}}</td>
                                 <td>{{detail.jumlah}}</td>
+                                <td>{{detail.biayaambil}}</td>
+                                <td>{{detail.biayaantar}}</td>
                                 <td>{{detail.bayar}}</td>
-                                <td></td>
+                                
+                            </tr>
+                            <tr>
+                                <td colspan="5">Total Bayar</td>
+                                <td>{{trx.total}}</td>
                             </tr>
                       </tbody>
                   </table>

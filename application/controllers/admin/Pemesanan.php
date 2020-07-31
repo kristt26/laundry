@@ -32,6 +32,8 @@ class Pemesanan extends CI_Controller
 
         redirect('admin/pemesanan');
     }
+
+    
     public function hapus($kd_pemesanan)
     {
         if ($this->PemesananModel->delete($kd_pemesanan)) {

@@ -24,19 +24,55 @@
   <div class="data-flush" data-flash="<?= $this->session->flashdata('pesan');?>"></div>
   <div class="login-box">
     <div class="login-logo">
-      <h3>SISTEM INFORMASI LAUNDRY</h3>
+      <h3>REGISTRASI USER</h3>
     </div>
     <!-- /.login-logo -->
     <div class="card">
       <div class="card-body login-card-body">
-        <p class="login-box-msg">Sign in to start your session</p>
+        <p class="login-box-msg">Lengkapi biodata anda</p>
 
-        <form action="<?= base_url();?>authorization/login" method="post">
+        <form action="<?= base_url();?>authorization/simpan" method="post">
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" name="nama" placeholder="Nama Lengkap">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-user"></span>
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <input type="number" class="form-control" name="no_hp" placeholder="Kontak">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-phone"></span>
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <select name="jk" class="form-control">
+                <option value="Pria">Pria</option>
+                <option value="Wanita">Wanita</option>
+            </select>
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-transgender"></span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="input-group mb-3">
+            <textarea type="text" class="form-control" name="alamat" placeholder="Alamat Lengkap"></textarea>
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-home"></span>
+              </div>
+            </div>
+          </div>
           <div class="input-group mb-3">
             <input type="text" class="form-control" name="username" placeholder="Username">
             <div class="input-group-append">
               <div class="input-group-text">
-                <span class="fas fa-envelope"></span>
+                <span class="fas fa-user-circle"></span>
               </div>
             </div>
           </div>
@@ -44,16 +80,16 @@
             <input type="password" class="form-control" name="password" placeholder="Password">
             <div class="input-group-append">
               <div class="input-group-text">
-                <span class="fas fa-lock"></span>
+                <span class="fas fa-key"></span>
               </div>
             </div>
           </div>
           <div class="d-flex justify-content-between">
             <div>
-              <button type="submit" class="btn btn-primary btn-block" style="margin-top: 0 !important ;">Login</button>
+              <a href="<?= base_url()?>index.php/authorization" type="submit" class="btn btn-secondary btn-block" style="margin-top: 0 !important ;">Kembali</a>
             </div>
               <div>
-              <a href="<?= base_url()?>index.php/authorization/registrasi" type="submit" class="btn btn-info btn-block">Registrasi</a>
+              <button type="submit" class="btn btn-primary btn-block">Registrasi</button>
               </div>
               
             <!-- /.col -->

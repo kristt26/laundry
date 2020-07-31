@@ -89,6 +89,21 @@ class Transaksi_model extends CI_Model {
         WHERE
             `transaksi`.`id_pemesanan` IS NULL AND pemesanan.status NOT IN('Selesai','Batal')");
         $data['pemesanan']= $query->result();
+        foreach ($data['pemesanan'] as $key => $value) {
+            $result = $this->db->query("SELECT
+                `jenispakaian`.`jenis`,
+                `jenispakaian`.`harga`,
+                `jenispakaian`.`statusbiaya`,
+                `detailpemesanan`.`pemesanan_id`,
+                `detailpemesanan`.`idjenispakaian`,
+                `detailpemesanan`.`jumlah`
+            FROM
+                `jenispakaian`
+                RIGHT JOIN `detailpemesanan` ON `jenispakaian`.`idjenispakaian` =
+                `detailpemesanan`.`idjenispakaian`
+            WHERE `detailpemesanan`.`pemesanan_id` = $value->id");
+            $value->detail = $result->result();
+        }
         $query= $this->db->get('jenispakaian');
         $data['jenis']= $query->result();
         return $data;
@@ -97,7 +112,7 @@ class Transaksi_model extends CI_Model {
     public function insert($data)
     {
         $itemtrans = [
-            'id_pemesanan'=>$data['id_pemesanan'],
+            'id_pemesanan'=>$data['id_pemesanan']['id'],
             'kd_pegawai'=>$this->session->userdata('kd_pegawai'),
             'tgl_ambil'=>$data['tgl_ambil'],
             'total'=>$data['total'],
@@ -114,13 +129,15 @@ class Transaksi_model extends CI_Model {
                 'idjenispakaian'=>$value['idjenispakaian'],
                 'kd_transaksi'=>$kd_transaksi,
                 'berat'=>$value['berat'],
+                'biayaambil'=>$value['biayaambil'],
+                'biayaantar'=>$value['biayaantar'],
                 'jumlah'=>$value['jumlah'],
                 'bayar'=>$value['bayar']
             ];
             $this->db->insert('detail', $itemdetail);
         }
 
-        $this->db->where('id', $data['id_pemesanan']);
+        $this->db->where('id', $data['id_pemesanan']['id']);
         $this->db->update('pemesanan', $itempem);
         if($this->db->trans_status()==true){
             $this->db->trans_commit();
@@ -141,6 +158,19 @@ class Transaksi_model extends CI_Model {
         ];
         $this->db->where('kd_transaksi', $data['kd_transaksi']);
         $result = $this->db->update('transaksi', $itemtrans);
+        foreach ($data['jenis'] as $key => $value) {
+            $itemdetail = [
+                'idjenispakaian'=>$value['idjenispakaian'],
+                'kd_transaksi'=>$value['kd_transaksi'],
+                'berat'=>$value['berat'],
+                'biayaambil'=>$value['biayaambil'],
+                'biayaantar'=>$value['biayaantar'],
+                'jumlah'=>$value['jumlah'],
+                'bayar'=>$value['bayar']
+            ];
+            $this->db->where('iddetail', $value['iddetail']);
+            $this->db->update('detail', $itemdetail);
+        }
         return $result;    
     }
     public function delete($kd_transaksi)

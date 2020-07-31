@@ -84,6 +84,7 @@
               <td><?= $item->jk?></td>
               <td><?= $item->alamat?></td>
               <td>
+            
                 <div class="tombol">
                   <bottom class="btn btn-default" id="ubahPelanggan" data-kd_pelanggan="<?= $item->kd_pelanggan?>"
                     data-nama="<?= $item->nama?>" data-no_hp="<?= $item->no_hp?>" data-jk="<?= $item->jk?>"

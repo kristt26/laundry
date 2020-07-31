@@ -13,7 +13,8 @@ class Pelanggan_model extends CI_Model {
     {
         $user= [
             'username'=>$data['username'],
-            'password'=>md5('member'),
+            'password'=>md5($data['password']),
+            'jenis' => 'Member'
         ];
         $item = [
             'nama'=>$data['nama'],

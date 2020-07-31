@@ -24,6 +24,7 @@ class Transaksi extends CI_Controller
         $data = $this->TransaksiModel->select();
         echo json_encode($data);
     }
+    
     function simpan()
     {
         $data = json_decode($this->security->xss_clean($this->input->raw_input_stream), true);

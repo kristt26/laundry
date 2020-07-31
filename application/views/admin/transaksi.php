@@ -11,7 +11,7 @@
             <div class="col-sm-8">
               <div ng-show="tombol=='Simpan'" ng-hide="tombol=='Ubah'">
                 <select ng-options="item as item.kd_pemesanan for item in datas.pemesanan" class="form-control select2"
-                  ng-model="pemesanan" style="width: 100%;" ng-change="model.id_pemesanan = pemesanan">
+                  ng-model="pemesanan" style="width: 100%;" ng-change="model.id_pemesanan = pemesanan; selected()">
                 </select>
               </div>
               <input ng-show="tombol=='Ubah'" ng-hide="tombol=='Simpan'" type="text" class="form-control"
@@ -24,15 +24,6 @@
             <div class="col-sm-8">
               <input type="date" class="form-control" name="tgl_ambil" id="tgl_ambil" ng-model="model.tgl_ambil"
                 required>
-            </div>
-          </div>
-          <div class="form-group row">
-            <label for="jenis_type" class="col-sm-4 col-form-label">Jenis Type</label>
-            <div class="col-sm-8">
-              <select class="form-control select2" style="width: 100%;"
-                ng-options="item as item.jenis for item in datas.jenis" ng-model="jenis" ng-change="selected(jenis)">
-                <option>Select</option>
-              </select>
             </div>
           </div>
         </div>
@@ -53,10 +44,12 @@
         <table class="table table-bordered">
           <thead>
             <tr>
-              <th width="35%">Jenis</th>
+              <th>Jenis</th>
               <th>Berat</th>
               <th>Jumlah</th>
-              <th width="40%">Bayar</th>
+              <th>Biaya Ambil</th>
+              <th>Biaya Antar</th>
+              <th>Bayar</th>
             </tr>
           </thead>
           <tbody>
@@ -69,6 +62,22 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text">Rp. </span>
                   </div>
+                  <input type="number" class="form-control text-right" ng-model="item.biayaambil" ng-change="hitung()">
+                </div>
+              </td>
+              <td>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">Rp. </span>
+                  </div>
+                  <input type="number" class="form-control text-right" ng-model="item.biayaantar" ng-change="hitung()">
+                </div>
+              </td>
+              <td>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">Rp. </span>
+                  </div>
                   <input type="text" class="form-control text-right" ng-model="item.bayar" format="currency" disabled>
                 </div>
               </td>
@@ -76,7 +85,7 @@
           </tbody>
           <tfoot>
             <tr>
-              <td colspan="3"></td>
+              <td colspan="5"></td>
               <td>
                 <div class="input-group">
                   <div class="input-group-prepend">
@@ -109,7 +118,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="item in datas.transaksi">
+            <tr ng-repeat="item in datas.transaksi  | orderBy: '-kd_pemesanan'">
               <td>{{$index+1}}</td>
               <td>{{item.kd_pemesanan}}</td>
               <td>{{item.tanggal}}</td>
@@ -138,10 +147,12 @@
           <table class="table table-bordered">
             <thead>
               <tr>
-                <th width="35%">Jenis</th>
+                <th>Jenis</th>
                 <th>Berat</th>
                 <th>Jumlah</th>
-                <th width="40%">Bayar</th>
+                <th>Biaya Ambil</th>
+                <th>Biaya Antar</th>
+                <th>Bayar</th>
               </tr>
             </thead>
             <tbody>
@@ -149,6 +160,8 @@
                 <td>{{item.jenis}}</td>
                 <td>{{item.berat}}</td>
                 <td>{{item.jumlah}}</td>
+                <td>{{item.biayaambil | currency:"Rp. "}}</td>
+                <td>{{item.biayaantar | currency:"Rp. "}}</td>
                 <td>
                   <div class="input-group">
                     <div class="input-group-prepend">
@@ -161,7 +174,7 @@
             </tbody>
             <tfoot>
               <tr>
-                <td colspan="3">TOTAL BAYAR</td>
+                <td colspan="5">TOTAL BAYAR</td>
                 <td>
                   <div class="input-group">
                     <div class="input-group-prepend">
@@ -189,11 +202,11 @@
           if (!ctrl) return;
 
           ctrl.$formatters.unshift(function (a) {
-            return $filter(attrs.format)(ctrl.$modelValue, attrs.format == 'currency' ? '' : null)
+            return $filter(attrs.format)(ctrl.$modelValue, attrs.format == 'currency' ? ' ' : null)
           });
 
           elem.bind('blur', function (event) {
-            var plainNumber = elem.val().replace(/[^\d|\-+|\.+]/g, '');
+            var plainNumber = elem.val().replace(/[^\d|\-+|\.+]/g, ' ');
             elem.val($filter(attrs.format)(plainNumber));
           });
         }
@@ -218,15 +231,21 @@
           value.tanggal = new Date(tgl[0], tgl[1] - 1, tgl[2]);
           value.tanggal = convertanggal(value.tanggal)
         })
-        console.log($scope.datas);
+        console.log($scope.model);
       })
-      $scope.selected = (item) => {
+      $scope.selected = () => {
+        var item = $scope.model.id_pemesanan.detail
         if (item) {
-          item.berat = 0;
-          item.jumlah = 0;
-          item.bayar = 0;
-          item.total = 0;
-          $scope.model.jenis.push(angular.copy(item));
+          angular.forEach(item, value=>{
+            value.berat = 0;
+            value.jumlah = parseInt(value.jumlah);
+            value.biayaambil = 0;
+            value.biayaantar = 0;
+            value.bayar = 0;
+            value.total = 0;
+            $scope.model.jenis.push(angular.copy(value));
+          })
+          $scope.hitung();
         }
       }
       $scope.simpan = () => {
@@ -244,13 +263,11 @@
           $scope.tombol = "Simpan"
           $scope.tombol = "Ubah"
           if ($scope.model.kd_transaksi == undefined) {
-            swal("Information!", "Berhasil di ditambahkan", "success").then((value) => {
-
-            });
+            $scope.clear()
+            swal("Information!", "Berhasil di ditambahkan", "success");
           } else {
-            swal("Information!", "Berhasil diubah", "success").then((value) => {
-
-            });
+            $scope.clear()
+            swal("Information!", "Berhasil diubah", "success");
           }
         }, error => {
           swal("Information!", "proses gagal", "error").then((value) => {
@@ -259,15 +276,17 @@
         })
       }
       $scope.ubah = (item) => {
-        $scope.model = item;
+        $scope.model = angular.copy(item);
         var cektanggal = typeof $scope.model.tgl_ambil;
         if (cektanggal == "string") {
           var tgl = $scope.model.tgl_ambil.split('-');
           $scope.model.tgl_ambil = new Date(tgl[0], tgl[1] - 1, tgl[2]);
         }
-        angular.forEach(item.jenis, value => {
+        angular.forEach($scope.model.jenis, value => {
           value.berat = parseInt(value.berat);
           value.jumlah = parseInt(value.jumlah);
+          value.biayaambil = parseInt(value.biayaambil);
+          value.biayaantar = parseInt(value.biayaantar);
         })
         $scope.cetak = true;
         $scope.tombol = "Ubah"
@@ -295,10 +314,10 @@
         $scope.model.total = 0;
         angular.forEach($scope.model.jenis, item => {
           if (item.statusbiaya == 'perkilo') {
-            item.bayar = parseFloat(item.berat) * parseInt(item.harga);
+            item.bayar = (parseFloat(item.berat) * parseInt(item.harga)) + parseFloat(item.biayaambil) + parseFloat(item.biayaantar);
             $scope.model.total += item.bayar;
           } else {
-            item.bayar = parseInt(item.jumlah) * parseInt(item.harga);
+            item.bayar =( parseInt(item.jumlah) * parseInt(item.harga)) + parseFloat(item.biayaambil) + parseFloat(item.biayaantar);
             $scope.model.total += item.bayar;
           }
         })
